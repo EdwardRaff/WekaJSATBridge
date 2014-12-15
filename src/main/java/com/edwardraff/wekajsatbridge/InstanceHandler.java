@@ -114,7 +114,7 @@ public class InstanceHandler
      * @param instances the Weka style dataset to convert to a JSAT one
      * @return the appropriate JSAT dataset type for the given data
      */
-    public DataSet instancesToDataSet(Instances instances)
+    public static DataSet instancesToDataSet(Instances instances)
     {
         int numAttributes = instances.numAttributes();
         
