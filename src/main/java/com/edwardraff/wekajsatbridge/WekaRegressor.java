@@ -18,9 +18,12 @@ package com.edwardraff.wekajsatbridge;
  */
 
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import jsat.classifiers.DataPoint;
 import jsat.exceptions.FailedToFitException;
+import jsat.parameters.Parameter;
+import jsat.parameters.Parameterized;
 import jsat.regression.RegressionDataSet;
 import weka.classifiers.Classifier;
 import weka.core.Capabilities.Capability;
@@ -30,11 +33,16 @@ import weka.core.WeightedInstancesHandler;
 
 /**
  * This class wraps a Weka Classifier into a JSAT regressor with the associated
- * behavior. 
+ * behavior. <br>
+ * <br>
+ * Parameters are inferred directly from matching get/set methods from the given
+ * Weka classifier, rather than using the {@link OptionHandler} interface. This 
+ * is done because the options array returned may have empty values, and the 
+ * option arrays tend to have uninformative names. 
  * 
  * @author Edward Raff
  */
-public class WekaRegressor implements jsat.regression.Regressor
+public class WekaRegressor implements jsat.regression.Regressor, Parameterized
 {
     /**
      * When a weka classifier attempts to classify an instance, the instance 
@@ -103,5 +111,17 @@ public class WekaRegressor implements jsat.regression.Regressor
     public WekaRegressor clone()
     {
         return new WekaRegressor(this);
+    }
+    
+    @Override
+    public List<Parameter> getParameters()
+    {
+        return Parameter.getParamsFromMethods(wekaClassifier);
+    }
+
+    @Override
+    public Parameter getParameter(String paramName)
+    {
+        return Parameter.toParameterMap(getParameters()).get(paramName);
     }
 }

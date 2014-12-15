@@ -18,11 +18,14 @@ package com.edwardraff.wekajsatbridge;
  */
 
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import jsat.classifiers.CategoricalResults;
 import jsat.classifiers.ClassificationDataSet;
 import jsat.classifiers.DataPoint;
 import jsat.exceptions.FailedToFitException;
+import jsat.parameters.Parameter;
+import jsat.parameters.Parameterized;
 import weka.classifiers.Classifier;
 import weka.core.Capabilities.Capability;
 import weka.core.Instance;
@@ -31,11 +34,16 @@ import weka.core.WeightedInstancesHandler;
 
 /**
  * This class wraps a Weka Classifier into a JSAT classifier with the associated
- * behavior. 
+ * behavior. <br>
+ * <br>
+ * Parameters are inferred directly from matching get/set methods from the given
+ * Weka classifier, rather than using the {@link OptionHandler} interface. This 
+ * is done because the options array returned may have empty values, and the 
+ * option arrays tend to have uninformative names. 
  * 
  * @author Edward Raff
  */
-public class WekaClassifier implements jsat.classifiers.Classifier
+public class WekaClassifier implements jsat.classifiers.Classifier, Parameterized
 {
     private Classifier wekaClassifier;
     /**
@@ -108,5 +116,17 @@ public class WekaClassifier implements jsat.classifiers.Classifier
     public WekaClassifier clone()
     {
         return new WekaClassifier(this);
+    }
+    
+    @Override
+    public List<Parameter> getParameters()
+    {
+        return Parameter.getParamsFromMethods(wekaClassifier);
+    }
+
+    @Override
+    public Parameter getParameter(String paramName)
+    {
+        return Parameter.toParameterMap(getParameters()).get(paramName);
     }
 }

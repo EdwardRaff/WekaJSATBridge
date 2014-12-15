@@ -18,22 +18,36 @@ package com.edwardraff.wekajsatbridge;
  */
 
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jsat.DataSet;
 import jsat.clustering.ClustererBase;
+import jsat.clustering.KClusterer;
 import jsat.exceptions.FailedToFitException;
+import jsat.parameters.Parameter;
+import jsat.parameters.Parameterized;
 import weka.clusterers.Clusterer;
 import weka.core.Instances;
+import weka.core.OptionHandler;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Remove;
 
 /**
- *
+ * This class wraps a Weka Clusterer into a JSAT CLusterer with the associated
+ * behavior. Because Weka dose not provide a means of programmatically 
+ * determining if a fixed number of clusters can be specified, there is no 
+ * wrapper for {@link KClusterer}. <br>
+ * <br>
+ * Parameters are inferred directly from matching get/set methods from the given
+ * Weka classifier, rather than using the {@link OptionHandler} interface. This 
+ * is done because the options array returned may have empty values, and the 
+ * option arrays tend to have uninformative names. 
+ * 
  * @author Edward Raff
  */
-public class WekaClusterer extends ClustererBase
+public class WekaClusterer extends ClustererBase implements Parameterized
 {
     private Clusterer wekaClusterer;
 
@@ -103,5 +117,17 @@ public class WekaClusterer extends ClustererBase
     protected WekaClusterer clone() 
     {
         return new WekaClusterer(this);
+    }
+
+    @Override
+    public List<Parameter> getParameters()
+    {
+        return Parameter.getParamsFromMethods(wekaClusterer);
+    }
+
+    @Override
+    public Parameter getParameter(String paramName)
+    {
+        return Parameter.toParameterMap(getParameters()).get(paramName);
     }
 }
