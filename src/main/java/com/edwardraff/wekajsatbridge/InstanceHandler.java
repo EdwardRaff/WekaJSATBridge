@@ -160,7 +160,7 @@ public class InstanceHandler
                 throw new RuntimeException("Class attribute is not a numeric or nominal value");
         }
         
-        for(int i = 0; i < instances.numAttributes(); i++)
+        for(int i = 0; i < instances.numInstances(); i++)
         {
             Instance instance = instances.instance(i);
             int[] nominalVals = new int[numNominal];
