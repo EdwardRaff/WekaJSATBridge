@@ -153,9 +153,9 @@ public class InstanceHandler
         {
             Attribute classAttribute = instances.classAttribute();
             if(classAttribute.isNumeric())//regression
-                dataSet = new RegressionDataSet(numericPos, catInfo);
+                dataSet = new RegressionDataSet(numNumeric, catInfo);
             else if(classAttribute.isNominal())//classificaiton
-                dataSet = new ClassificationDataSet(numericPos, catInfo, new CategoricalData(classAttribute.numValues()));
+                dataSet = new ClassificationDataSet(numNumeric, catInfo, new CategoricalData(classAttribute.numValues()));
             else
                 throw new RuntimeException("Class attribute is not a numeric or nominal value");
         }
