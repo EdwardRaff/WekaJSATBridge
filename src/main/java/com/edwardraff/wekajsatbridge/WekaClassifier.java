@@ -37,18 +37,18 @@ import weka.core.WeightedInstancesHandler;
  * behavior. <br>
  * <br>
  * Parameters are inferred directly from matching get/set methods from the given
- * Weka classifier, rather than using the {@link OptionHandler} interface. This 
- * is done because the options array returned may have empty values, and the 
- * option arrays tend to have uninformative names. 
- * 
+ * Weka classifier, rather than using the {@link OptionHandler} interface. This
+ * is done because the options array returned may have empty values, and the
+ * option arrays tend to have uninformative names.
+ *
  * @author Edward Raff
  */
 public class WekaClassifier implements jsat.classifiers.Classifier, Parameterized
 {
     private Classifier wekaClassifier;
     /**
-     * When a weka classifier attempts to classify an instance, the instance 
-     * MUST belong to a dataset, or an exception will be thrown. So 
+     * When a weka classifier attempts to classify an instance, the instance
+     * MUST belong to a dataset, or an exception will be thrown. So
      */
     private Instances wekaDataSet;
     private int numCategories;
@@ -59,7 +59,7 @@ public class WekaClassifier implements jsat.classifiers.Classifier, Parameterize
             throw new IllegalArgumentException("The given Weka classifier (" + wekaClassifier.getClass().getSimpleName() + ") dosn't support classification tasks");
         this.wekaClassifier = wekaClassifier;
     }
-    
+
     public WekaClassifier(WekaClassifier toCopy)
     {
         this.wekaClassifier = OtherUtils.serializationCopy(toCopy.wekaClassifier);
@@ -117,7 +117,7 @@ public class WekaClassifier implements jsat.classifiers.Classifier, Parameterize
     {
         return new WekaClassifier(this);
     }
-    
+
     @Override
     public List<Parameter> getParameters()
     {
