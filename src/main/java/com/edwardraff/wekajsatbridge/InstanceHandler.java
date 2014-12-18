@@ -36,9 +36,9 @@ import weka.core.SparseInstance;
 import weka.core.UnassignedDatasetException;
 
 /**
- * This class provides methods to convert between JSAT and Weka datasets and 
+ * This class provides methods to convert between JSAT and Weka datasets and
  * instances in both directions (JSAT to Weka and Weka to JSAT)
- * 
+ *
  * @author Edward Raff
  */
 public class InstanceHandler
@@ -108,26 +108,26 @@ public class InstanceHandler
 
     /**
      * Attempts to convert the given set of Instances into a JSAT dataset. Based
-     * on the class attribute of the instances, the returned DataSet may be a 
-     * {@link SimpleDataSet}, {@link RegressionDataSet}, or 
-     * {@link ClassificationDataSet}. 
+     * on the class attribute of the instances, the returned DataSet may be a
+     * {@link SimpleDataSet}, {@link RegressionDataSet}, or
+     * {@link ClassificationDataSet}.
      * @param instances the Weka style dataset to convert to a JSAT one
      * @return the appropriate JSAT dataset type for the given data
      */
     public static DataSet instancesToDataSet(Instances instances)
     {
         int numAttributes = instances.numAttributes();
-        
+
         int numNumeric = 0;
         int numNominal = 0;
-        
+
         //we need to figure out if this instance has the class value in it, which can throw an exception
-        
+
         int classIndex = -1;//negative means not present
         classIndex = instances.classIndex();//dosn't throw an exception when its a Instances object
-        
+
         int nominalPos = 0, numericPos = 0;
-        
+
         for(int i = 0; i < numAttributes; i++)
             if(i == classIndex)
                 continue;
@@ -135,7 +135,7 @@ public class InstanceHandler
                 numNumeric++;
             else if(instances.attribute(i).isNominal())
                 numNominal++;
-        
+
         CategoricalData[] catInfo = new CategoricalData[numNominal];
         //go back and get nominal info
          for(int i = 0; i < numAttributes; i++)
@@ -143,9 +143,9 @@ public class InstanceHandler
                 continue;
             else if(instances.attribute(i).isNominal())
                 catInfo[nominalPos++] = new CategoricalData(instances.attribute(i).numValues());
-         
-        
-        
+
+
+
         DataSet dataSet;
         if(classIndex < 0)//no target value
             dataSet = new SimpleDataSet(catInfo, numNumeric);
@@ -159,7 +159,7 @@ public class InstanceHandler
             else
                 throw new RuntimeException("Class attribute is not a numeric or nominal value");
         }
-        
+
         for(int i = 0; i < instances.numInstances(); i++)
         {
             Instance instance = instances.instance(i);
@@ -184,7 +184,7 @@ public class InstanceHandler
             }
 
             DataPoint dp = new DataPoint(numericVals, nominalVals, catInfo, instance.weight());
-            //add to the dataset 
+            //add to the dataset
             if(dataSet instanceof RegressionDataSet)
                 ((RegressionDataSet)dataSet).addDataPoint(dp, instance.value(classIndex));
             else if(dataSet instanceof ClassificationDataSet)
@@ -192,10 +192,10 @@ public class InstanceHandler
             else//just a dataset
                 ((SimpleDataSet)dataSet).getBackingList().add(dp);
         }
-        
+
         return dataSet;
     }
-    
+
     /**
      * Converts a JSAT DataPoint to a Weka Instance object
      * @param dp the datapoint to convert to a Weka Instance
@@ -215,20 +215,20 @@ public class InstanceHandler
         instance.setWeight(dp.getWeight());
         return instance;
     }
-    
+
     /**
-     * Converts a JSAT dataset into a Weka Instances object with the instance 
-     * already in it. If the dataSet is a {@link ClassificationDataSet} or 
-     * {@link RegressionDataSet} the Instances object will have a class index, 
-     * and the class index will always be the last index. 
-     * 
+     * Converts a JSAT dataset into a Weka Instances object with the instance
+     * already in it. If the dataSet is a {@link ClassificationDataSet} or
+     * {@link RegressionDataSet} the Instances object will have a class index,
+     * and the class index will always be the last index.
+     *
      * @param dataSet the dataset to convert to a Weka dataset
      * @return the Weka Instances object version of this JSAT dataset
      */
     public static Instances dataSetToInstances(DataSet dataSet)
     {
         FastVector attributes = new FastVector();
-        
+
         CategoricalData[] catInfo = dataSet.getCategories();
         for(int i = 0; i < catInfo.length; i++)
         {
@@ -236,11 +236,11 @@ public class InstanceHandler
             String name = cat.getCategoryName()+i/*make sure they are different incase of "No Name"*/;
             attributes.addElement(categoricalDataToAttribute(cat, name));
         }
-        
+
         for(int i = 0; i < dataSet.getNumNumericalVars(); i++)
             attributes.addElement(new Attribute("numericAtt"+i));
-        
-        
+
+
         //class attribute?
         int classIndex = -1;
         if(dataSet instanceof RegressionDataSet)
@@ -253,11 +253,11 @@ public class InstanceHandler
             classIndex = attributes.size();
             attributes.addElement(categoricalDataToAttribute(((ClassificationDataSet)dataSet).getPredicting(), "classTarget"));
         }
-        
+
         Instances instances = new Instances("JSATtoWekaDataset", attributes, dataSet.getSampleSize());
-        
+
         instances.setClassIndex(classIndex);
-        
+
         for(int i = 0; i < dataSet.getSampleSize(); i++)
         {
             DataPoint dp =  dataSet.getDataPoint(i);
@@ -266,7 +266,7 @@ public class InstanceHandler
                 targetValue = ((RegressionDataSet)dataSet).getTargetValue(i);
             else if(dataSet instanceof ClassificationDataSet)
                 targetValue = ((ClassificationDataSet)dataSet).getDataPointCategory(i);
-            
+
             //TODO handle sparse data points
             double[] attValues = new double[attributes.size()];
             int pos = 0;
@@ -280,12 +280,12 @@ public class InstanceHandler
             instance.setDataset(instances);//is this needed?
             instances.add(instance);
         }
-        
+
         return instances;
     }
 
     /**
-     * Helper method that converts a CategoricalData object into a Weka 
+     * Helper method that converts a CategoricalData object into a Weka
      * Attribute object
      * @param cat the categoricaldata object to convert
      * @param name the name to use for the Attribute's name
@@ -299,10 +299,10 @@ public class InstanceHandler
         Attribute catAtt = new Attribute(name, attributeValues);
         return catAtt;
     }
-    
+
     /**
-     * Helper method that converts a CategoricalData object into a Weka 
-     * Attribute object with the same name. 
+     * Helper method that converts a CategoricalData object into a Weka
+     * Attribute object with the same name.
      * @param cat the categoricaldata object to convert
      * @return a Weka Attribute object representing the same nominal variable
      */

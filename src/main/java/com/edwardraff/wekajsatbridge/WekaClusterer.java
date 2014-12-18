@@ -36,15 +36,15 @@ import weka.filters.unsupervised.attribute.Remove;
 
 /**
  * This class wraps a Weka Clusterer into a JSAT CLusterer with the associated
- * behavior. Because Weka dose not provide a means of programmatically 
- * determining if a fixed number of clusters can be specified, there is no 
+ * behavior. Because Weka dose not provide a means of programmatically
+ * determining if a fixed number of clusters can be specified, there is no
  * wrapper for {@link KClusterer}. <br>
  * <br>
  * Parameters are inferred directly from matching get/set methods from the given
- * Weka classifier, rather than using the {@link OptionHandler} interface. This 
- * is done because the options array returned may have empty values, and the 
- * option arrays tend to have uninformative names. 
- * 
+ * Weka classifier, rather than using the {@link OptionHandler} interface. This
+ * is done because the options array returned may have empty values, and the
+ * option arrays tend to have uninformative names.
+ *
  * @author Edward Raff
  */
 public class WekaClusterer extends ClustererBase implements Parameterized
@@ -60,7 +60,7 @@ public class WekaClusterer extends ClustererBase implements Parameterized
     {
         this.wekaClusterer = OtherUtils.serializationCopy(toCopy.wekaClusterer);
     }
-    
+
     @Override
     public int[] cluster(DataSet arg0, int[] assignment)
     {
@@ -68,11 +68,11 @@ public class WekaClusterer extends ClustererBase implements Parameterized
         //cleanup might be needed first
         if(instances.classIndex() >= 0)
         {
-            //Weka clusters don't like to cluster data if it has a class attribute. So we must remove it. 
+            //Weka clusters don't like to cluster data if it has a class attribute. So we must remove it.
             Remove removeFilter = new Remove();
             removeFilter.setInvertSelection(false);//only remove what I list
             removeFilter.setAttributeIndicesArray(new int[]{instances.classIndex()});
-            
+
             try
             {
                 removeFilter.setInputFormat(instances);
@@ -84,8 +84,8 @@ public class WekaClusterer extends ClustererBase implements Parameterized
                 throw new FailedToFitException(ex);
             }
         }
-        
-        //ok, we are good now. 
+
+        //ok, we are good now.
         try
         {
             wekaClusterer.buildClusterer(instances);
@@ -93,8 +93,8 @@ public class WekaClusterer extends ClustererBase implements Parameterized
                 assignment = new int[arg0.getSampleSize()];
             /*
              * weka demands this must be implemented, and since it dosn't return
-             * the clustering of the input data - its the only way we can get 
-             * the designations 
+             * the clustering of the input data - its the only way we can get
+             * the designations
              */
             for(int i = 0; i < instances.numInstances(); i++)
                 assignment[i] = wekaClusterer.clusterInstance(instances.instance(i));
@@ -114,7 +114,7 @@ public class WekaClusterer extends ClustererBase implements Parameterized
     }
 
     @Override
-    protected WekaClusterer clone() 
+    protected WekaClusterer clone()
     {
         return new WekaClusterer(this);
     }
