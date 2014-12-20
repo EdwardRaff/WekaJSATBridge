@@ -34,6 +34,11 @@ public class JSATRegressor extends weka.classifiers.Classifier
 {
     Regressor regressor;
 
+    /**
+     * Creates a new Weka Classifier object for regression problems from the 
+     * given JSAT regressor
+     * @param regressor the JST regressor to use
+     */
     public JSATRegressor(Regressor regressor)
     {
         this.regressor = regressor;

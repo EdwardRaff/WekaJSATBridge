@@ -34,6 +34,10 @@ public class JSATClassifier extends weka.classifiers.Classifier
 {
     jsat.classifiers.Classifier classifier;
 
+    /**
+     * Creates a new Weka Classifier object that calls the given JSAT classifier
+     * @param classifier the JSAT classifier to use
+     */
     public JSATClassifier(jsat.classifiers.Classifier classifier)
     {
         this.classifier = classifier;
