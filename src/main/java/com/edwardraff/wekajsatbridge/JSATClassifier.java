@@ -32,7 +32,7 @@ import weka.core.Instances;
  */
 public class JSATClassifier extends weka.classifiers.Classifier
 {
-    jsat.classifiers.Classifier classifier;
+    private jsat.classifiers.Classifier classifier;
 
     /**
      * Creates a new Weka Classifier object that calls the given JSAT classifier
