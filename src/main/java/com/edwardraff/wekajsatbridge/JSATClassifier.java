@@ -26,8 +26,8 @@ import weka.core.Instance;
 import weka.core.Instances;
 
 /**
- * This wraps a JSAT classifier as a Weka Classifier 
- * 
+ * This wraps a JSAT classifier as a Weka Classifier
+ *
  * @author Edward Raff
  */
 public class JSATClassifier extends weka.classifiers.Classifier
@@ -68,12 +68,12 @@ public class JSATClassifier extends weka.classifiers.Classifier
         //TODO a better way to do this? Not all JSAT methods will support both
         capabilities.enable(Capability.NOMINAL_ATTRIBUTES);
         capabilities.enable(Capability.NUMERIC_ATTRIBUTES);
-        
+
         capabilities.enable(Capability.NOMINAL_CLASS);
-        
+
         capabilities.setMinimumNumberInstances(1);
         return capabilities;
     }
-    
-    
+
+
 }

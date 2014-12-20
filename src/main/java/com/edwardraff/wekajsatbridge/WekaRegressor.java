@@ -1,4 +1,4 @@
-package com.edwardraff.wekajsatbridge;
+
 
 /*
  * Copyright (C) 2014 Edward Raff
@@ -36,17 +36,17 @@ import weka.core.WeightedInstancesHandler;
  * behavior. <br>
  * <br>
  * Parameters are inferred directly from matching get/set methods from the given
- * Weka classifier, rather than using the {@link OptionHandler} interface. This 
- * is done because the options array returned may have empty values, and the 
- * option arrays tend to have uninformative names. 
- * 
+ * Weka classifier, rather than using the {@link OptionHandler} interface. This
+ * is done because the options array returned may have empty values, and the
+ * option arrays tend to have uninformative names.
+ *
  * @author Edward Raff
  */
 public class WekaRegressor implements jsat.regression.Regressor, Parameterized
 {
     /**
-     * When a weka classifier attempts to classify an instance, the instance 
-     * MUST belong to a dataset, or an exception will be thrown. So 
+     * When a weka classifier attempts to classify an instance, the instance
+     * MUST belong to a dataset, or an exception will be thrown. So
      */
     private Instances wekaDataSet;
     private Classifier wekaClassifier;
@@ -123,7 +123,7 @@ public class WekaRegressor implements jsat.regression.Regressor, Parameterized
     {
         return new WekaRegressor(this);
     }
-    
+
     @Override
     public List<Parameter> getParameters()
     {

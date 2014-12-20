@@ -27,7 +27,7 @@ import weka.core.Instances;
 
 /**
  * This wraps a JSAT Regressor as a Weka 'Classifier' that works on regression tasks
- * 
+ *
  * @author Edward Raff
  */
 public class JSATRegressor extends weka.classifiers.Classifier
@@ -64,12 +64,12 @@ public class JSATRegressor extends weka.classifiers.Classifier
         //TODO a better way to do this? Not all JSAT methods will support both
         capabilities.enable(Capability.NOMINAL_ATTRIBUTES);
         capabilities.enable(Capability.NUMERIC_ATTRIBUTES);
-        
+
         capabilities.enable(Capability.NOMINAL_CLASS);
-        
+
         capabilities.setMinimumNumberInstances(1);
         return capabilities;
     }
-    
-    
+
+
 }
