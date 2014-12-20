@@ -51,6 +51,10 @@ public class WekaClusterer extends ClustererBase implements Parameterized
 {
     private Clusterer wekaClusterer;
 
+    /**
+     * Creates a new JSAT cluster from the given Weka clusterer
+     * @param wekaClusterer the Weka clusterer to use
+     */
     public WekaClusterer(Clusterer wekaClusterer)
     {
         this.wekaClusterer = wekaClusterer;

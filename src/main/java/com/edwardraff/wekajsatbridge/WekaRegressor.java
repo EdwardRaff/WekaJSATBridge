@@ -51,6 +51,13 @@ public class WekaRegressor implements jsat.regression.Regressor, Parameterized
     private Instances wekaDataSet;
     private Classifier wekaClassifier;
 
+    /**
+     * Creates a new JSAT Regressor from the given Weka Classifier object that
+     * supports regression
+     * @param wekaClassifier the Weka Classifier regressor to use
+     * @throws IllegalArgumentException if the given Weka Classifier does not
+     * have the {@link Capability#NUMERIC_CLASS} Capability 
+     */
     public WekaRegressor(Classifier wekaClassifier)
     {
         if(!wekaClassifier.getCapabilities().handles(Capability.NUMERIC_CLASS))
@@ -58,6 +65,10 @@ public class WekaRegressor implements jsat.regression.Regressor, Parameterized
         this.wekaClassifier = wekaClassifier;
     }
     
+    /**
+     * Copy constructor
+     * @param toCopy the WekaRegressor to copy
+     */
     public WekaRegressor(WekaRegressor toCopy)
     {
         this.wekaClassifier = OtherUtils.serializationCopy(toCopy.wekaClassifier);

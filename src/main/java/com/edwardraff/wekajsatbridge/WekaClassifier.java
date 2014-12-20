@@ -53,6 +53,11 @@ public class WekaClassifier implements jsat.classifiers.Classifier, Parameterize
     private Instances wekaDataSet;
     private int numCategories;
 
+    /**
+     * Creates a new JSAT Classifier from the given Weka Classifier. 
+     * @param wekaClassifier the Weka Classifier object to use
+     * @throws IllegalArgumentException if the given classifier does not have the {@link Capability#NOMINAL_CLASS} Capability
+     */
     public WekaClassifier(Classifier wekaClassifier)
     {
         if(!wekaClassifier.getCapabilities().handles(Capability.NOMINAL_CLASS))
@@ -60,6 +65,10 @@ public class WekaClassifier implements jsat.classifiers.Classifier, Parameterize
         this.wekaClassifier = wekaClassifier;
     }
     
+    /**
+     * Copy constructor
+     * @param toCopy the wrapper object to copy
+     */
     public WekaClassifier(WekaClassifier toCopy)
     {
         this.wekaClassifier = OtherUtils.serializationCopy(toCopy.wekaClassifier);
