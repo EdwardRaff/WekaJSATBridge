@@ -91,6 +91,8 @@ public class InstanceHandler
         int numericPos = 0, nominalPos = 0;
         for (int i = 0; i < numAttributes; i++)
         {
+        	if(i == classIndex)
+                continue;
             Attribute attribute_i = instance.attribute(i);
             if (attribute_i.isNumeric())
             {
